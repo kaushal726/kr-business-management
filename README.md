@@ -2,7 +2,8 @@
 
 ## Clone the Repo
 
-    * Follow the commands
-        ```js
-        npm i
-        ```
+Follow these commands to clone the repository and install dependencies:
+
+```bash
+npm i
+```
