@@ -12,7 +12,7 @@ function App() {
   }
   return (
     <NoteState>
-      <div className="App">
+      <div className="App min-h-screen">
         <Toaster />
         {console.log(token)}
         {!token ?

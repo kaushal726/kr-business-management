@@ -1,218 +1,165 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react';
 import globalContext from '../Context/GlobalState';
 import toast from 'react-hot-toast';
-import { CompactTable } from '@table-library/react-table-library/compact';
-import { useTheme } from "@table-library/react-table-library/theme";
-import { getTheme } from "@table-library/react-table-library/baseline";
-import { useRowSelect } from "@table-library/react-table-library/select";
-import {
-    Table,
-    Header,
-    HeaderRow,
-    Body,
-    Row,
-    HeaderCell,
-    Cell,
-} from "@table-library/react-table-library/table";
+import { CSVLink } from 'react-csv';
 
-let data;
-let COLUMNS;
-let nodes = [];
 const Home = () => {
-    const [search, setSearch] = React.useState("");
+    const [search, setSearch] = React.useState('');
     const { login, updateLogin, token, setToken } = useContext(globalContext);
     const [userDetails, setUserDetails] = useState([]);
     const [showTable, setShowTable] = useState(false);
+    const [selectedPeriod, setSelectedPeriod] = useState('week');
 
 
-    function onSelectChange(action, state) {
-        console.log(action, state);
-    }
-    const theme = useTheme([
-        getTheme(),
-        {
-            Table: `
-            --data-table-library_grid-template-columns:  44px repeat(5, minmax(0, 1fr));
-          `,
-        },
-        {
-            HeaderRow: `
-            background-color: #aeacb0;
-          `,
-            Row: `
-            &:nth-of-type(odd) {
-              background-color: #d2f7fa;
+    useEffect(() => {
+        const fetchData = async () => {
+            const url = 'http://localhost:3000/users/show';
+            const requestOptions = {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token.accessToken}`,
+                },
+            };
+
+            try {
+                const response = await fetch(url, requestOptions);
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+
+                if (data) {
+                    setUserDetails(data);
+                    setShowTable(true);
+                }
+            } catch (error) {
+                console.error('There was a problem with the fetch operation:', error);
+                toast.error('Try Again');
             }
+        };
 
-            &:nth-of-type(even) {
-              background-color: #99ecf2;
-            }
-          `,
-        },
-    ]);
+        fetchData();
+    }, [token]);
 
     const handleSearch = (event) => {
         setSearch(event.target.value);
     };
-    useEffect(() => {
-        const url = 'http://localhost:3000/users/show';
-        console.log(token);
-        const requestOptions = {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token.accessToken}`,
-            }
+
+    const formattedTimestamp = (timestamp) => {
+        const options = {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
         };
-        fetch(url, requestOptions)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data) {
-                    loadTable(data);
-                    setUserDetails(data);
-                }
-            })
-            .catch(error => {
-                console.error('There was a problem with the fetch operation:', error);
-                toast.error(' Try Again');
-            });
-    }, [])
 
-    let loadTable = (userInfos) => {
-        nodes = []
-        userInfos.map(info => {
-            let obj = {
-                name: info.name,
-                Particular: info.particular,
-                Rate: info.rate,
-                Quantity: info.quantity,
-                Discount: info.discount,
-                Total: info.total,
-                Timestamp: info.created_at
-            }
-            nodes.push(obj)
-        })
-        data = { nodes };
-
-        data = {
-            nodes: data.nodes.filter((item) =>
-                item.name.toLowerCase().includes(search.toLowerCase())
-            ),
-        };
-        console.log(data);
-        COLUMNS = [
-            { label: 'TimeStamp', renderCell: (item) => item.Timestamp, select: true },
-            { label: 'Name', renderCell: (item) => item.name },
-            {
-                label: 'Particular', renderCell: (item) => item.Particular
-            },
-            { label: 'Rate', renderCell: (item) => item.Rate },
-            {
-                label: 'Quantity',
-                renderCell: (item) => item.Quantity,
-            },
-            { label: 'Discount', renderCell: (item) => item.Discount },
-            { label: 'Total', renderCell: (item) => item.Total },
-
-        ];
-        setShowTable(true);
-    }
-    data = { nodes };
-    const select = useRowSelect(data, {
-        onChange: onSelectChange,
-    });
-    data = {
-        nodes: data.nodes.filter((item) =>
-            item.name.toLowerCase().includes(search.toLowerCase())
-        ),
+        return new Date(timestamp).toLocaleString(undefined, options);
     };
 
-    const escapeCsvCell = (cell) => {
-        if (cell == null) {
-            return "";
-        }
-        const sc = cell.toString().trim();
-        if (sc === "" || sc === '""') {
-            return sc;
-        }
-        if (
-            sc.includes('"') ||
-            sc.includes(",") ||
-            sc.includes("\n") ||
-            sc.includes("\r")
-        ) {
-            return '"' + sc.replace(/"/g, '""') + '"';
-        }
-        return sc;
+    const filteredUserDetails = userDetails.filter((item) =>
+        item.name.toLowerCase().includes(search.toLowerCase())
+    );
+
+    const handlePeriodChange = (event) => {
+        setSelectedPeriod(event.target.value);
     };
 
-    const makeCsvData = (columns, data) => {
-        return data.reduce((csvString, rowItem) => {
-            return (
-                csvString +
-                columns
-                    .map(({ accessor }) => escapeCsvCell(accessor(rowItem)))
-                    .join(",") +
-                "\r\n"
-            );
-        }, columns.map(({ name }) => escapeCsvCell(name)).join(",") + "\r\n");
-    };
-
-
-    const downloadAsCsv = (columns, data, filename) => {
-        const csvData = makeCsvData(columns, data);
-        const csvFile = new Blob([csvData], { type: "text/csv" });
-        const downloadLink = document.createElement("a");
-
-        downloadLink.display = "none";
-        downloadLink.download = filename;
-        downloadLink.href = window.URL.createObjectURL(csvFile);
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-        document.body.removeChild(downloadLink);
-    };
-    const handleDownloadCsv = () => {
-        const columns = [
-            { accessor: (item) => item.Timestamp, name: "Timestamp" },
-            { accessor: (item) => item.name, name: "Name" },
-            { accessor: (item) => item.Particular, name: "Particular" },
-            { accessor: (item) => item.Rate, name: "Rate" },
-            { accessor: (item) => item.Quantity, name: "Quantity" },
-            { accessor: (item) => item.Discount, name: "Discount" },
-            { accessor: (item) => item.Total, name: "Total" },
-
+    const createCSVData = () => {
+        const csvData = [
+            ['Timestamp', 'Name', 'Particular', 'Rate', 'Quantity', 'Discount', 'Total'],
+            ...userDetails.map((item) => [
+                formattedTimestamp(item.created_at),
+                item.name,
+                item.particular,
+                item.rate,
+                item.quantity,
+                item.discount,
+                item.total,
+            ]),
         ];
 
-        downloadAsCsv(columns, data.nodes, "table");
+        return csvData;
     };
+
     return (
         <>
             {showTable && (
                 <>
-                    <button className='text-white' type="button" onClick={handleDownloadCsv}>
-                        Download as CSV
-                    </button>
-                    <label htmlFor="search">
-                        Search by Name:&nbsp;
-                        <input className='w-12' id="search" type="text" value={search} onChange={handleSearch} />
-                    </label>
+                    <section className='w-full flex justify-center items-center'>
+                        <label htmlFor="search" className="text-gray-800 w-full">
+                            Search by Name:&nbsp;
+                            <input
+                                className="w-64  px-2 py-1 border rounded-md focus:outline-none focus:border-blue-500"
+                                id="search"
+                                type="text"
+                                value={search}
+                                onChange={handleSearch}
+                            />
+                        </label>
+                        <label htmlFor="period" className="text-gray-800 w-full">
+                            Select Period:&nbsp;
+                            <select
+                                id="period"
+                                value={selectedPeriod}
+                                onChange={handlePeriodChange}
+                                className="w-32 px-2 py-1 border rounded-md focus:outline-none focus:border-blue-500"
+                            >
+                                <option value="week">Week</option>
+                                <option value="month">Month</option>
+                                <option value="year">Year</option>
+                            </select>
+                        </label>
+                        <CSVLink
+                            data={createCSVData()}
+                            filename={`data_${selectedPeriod}.csv`}
+                            className="ml-4 bg-blue-500 text-white px-4 py-2 rounded-md"
+                        >
+                            Download CSV
+                        </CSVLink>
+                    </section>
                     <br />
-                    <CompactTable
-                        columns={COLUMNS}
-                        data={data}
-                        theme={theme}
-                        layout={{ custom: false }}
-                        select={select}
-                    />
+                    <div className="overflow-x-auto">
+                        <table className="table-auto w-full border-collapse border border-blue-500 mt-4">
+                            <thead>
+                                <tr className="bg-blue-500 text-white">
+                                    <th className="border p-2">Timestamp</th>
+                                    <th className="border p-2">Name</th>
+                                    <th className="border p-2">Particular</th>
+                                    <th className="border p-2">Rate</th>
+                                    <th className="border p-2">Quantity</th>
+                                    <th className="border p-2">Discount</th>
+                                    <th className="border p-2">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {filteredUserDetails.map((item, index) => (
+                                    <tr
+                                        key={item.created_at}
+                                        className={index % 2 === 0 ? 'bg-gray-100' : 'bg-gray-200'}
+                                    >
+                                        <td className=" text-black border p-2">{formattedTimestamp(item.created_at)}</td>
+                                        <td className=" text-black border p-2">{item.name}</td>
+                                        <td className=" text-black border p-2">{item.particular}</td>
+                                        <td className=" text-black border p-2">{item.rate}</td>
+                                        <td className=" text-black border p-2">{item.quantity}</td>
+                                        <td className=" text-black border p-2">{item.discount}</td>
+                                        <td className=" text-black border p-2">{item.total}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </>
             )}
         </>
-    )
-}
 
-export default Home
+
+    );
+};
+
+export default Home;
