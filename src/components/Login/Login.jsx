@@ -22,7 +22,7 @@ const WelcomeModal = ({ onClose }) => (
             </svg>
 
             <button
-                className="absolute top-4 right-4 text-blue-700 hover:text-blue-900 focus:outline-none z-10"
+                className="absolute top-4 right-4 text-white hover:text-blue-900 focus:outline-none z-10"
                 onClick={onClose}
             >
                 <FontAwesomeIcon icon={faTimes} size="lg" />
@@ -69,7 +69,7 @@ const Login = (props) => {
     const dataHandler = (e) => {
         e.preventDefault();
         console.log(email, password);
-        const url = 'http://localhost:3000/auth/login';
+        const url = 'https://nodejs-api-bm.onrender.com/auth/login';
         const data = {
             email: email,
             password: password
@@ -120,7 +120,7 @@ const Login = (props) => {
     }
     const dataHandlerRegister = (e) => {
         e.preventDefault();
-        const url = 'http://localhost:3000/auth/register';
+        const url = 'https://nodejs-api-bm.onrender.com/auth/register';
         const data = {
             username: usernameRegister,
             email: emailRegister,

@@ -25,7 +25,7 @@ const Details = () => {
         e.preventDefault();
         console.log('Form data submitted:', formData);
         try {
-            const response = await fetch('http://localhost:3000/users/create', {
+            const response = await fetch('https://nodejs-api-bm.onrender.com/users/create', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

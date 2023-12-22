@@ -13,7 +13,7 @@ const Home = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const url = 'http://localhost:3000/users/show';
+            const url = 'https://nodejs-api-bm.onrender.com/users/show';
             const requestOptions = {
                 method: 'GET',
                 headers: {
