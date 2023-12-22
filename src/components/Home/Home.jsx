@@ -82,9 +82,11 @@ const Home = () => {
                 item.total,
             ]),
         ];
-
         return csvData;
     };
+    const showToast = () => {
+        toast.success(` Excel Downloaded `);
+    }
 
     return (
         <>
@@ -118,6 +120,7 @@ const Home = () => {
                             data={createCSVData()}
                             filename={`data_${selectedPeriod}.csv`}
                             className="ml-4 bg-blue-500 text-white px-4 py-2 rounded-md"
+                            onClick={showToast}
                         >
                             Download CSV
                         </CSVLink>

@@ -149,7 +149,8 @@ const Login = (props) => {
             });
         setEmailRegister("");
         setPasswordRegister("");
-        setUsernameRegister("")
+        setUsernameRegister("");
+        setRegister(false)
     }
 
     const handleChangeRegister = (e, type) => {
@@ -182,6 +183,7 @@ const Login = (props) => {
                                 value={usernameRegister}
                                 onChange={(e) => handleChangeRegister(e, "Username")}
                                 className="mt-1 p-2 w-full border rounded-md"
+                                required
                             />
                         </label>
 
@@ -193,6 +195,7 @@ const Login = (props) => {
                                 value={emailRegister}
                                 onChange={(e) => handleChangeRegister(e, "Email")}
                                 className="mt-1 p-2 w-full border rounded-md"
+                                required
                             />
                         </label>
 
@@ -204,6 +207,7 @@ const Login = (props) => {
                                 value={passwordRegister}
                                 onChange={(e) => handleChangeRegister(e, "Password")}
                                 className="mt-1 p-2 w-full border rounded-md"
+                                required
                             />
                         </label>
 
@@ -225,6 +229,7 @@ const Login = (props) => {
                                 value={email}
                                 onChange={(e) => handleChange(e, "Email")}
                                 className="mt-1 p-2 w-full border rounded-md"
+                                required
                             />
                         </label>
 
@@ -236,6 +241,7 @@ const Login = (props) => {
                                 value={password}
                                 onChange={(e) => handleChange(e, "Password")}
                                 className="mt-1 p-2 w-full border rounded-md"
+                                required
                             />
                         </label>
 

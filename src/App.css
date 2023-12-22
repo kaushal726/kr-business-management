@@ -1,0 +1,7 @@
+.active {
+  color: black; /* Change the color to your desired active color */
+  /* background-color: #f8f8f8; Change the background color to your desired active background color */
+  border-bottom: 3px solid white; /* Add a bottom border for emphasis */
+  border-radius: 10px;
+  transition: color 0.3s, background-color 0.3s, border-bottom 0.3s; /* Add smooth transitions */
+}

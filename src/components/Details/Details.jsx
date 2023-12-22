@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import globalContext from '../Context/GlobalState';
+import toast from 'react-hot-toast';
+
 
 
 const Details = () => {
@@ -37,6 +39,7 @@ const Details = () => {
             if (response.ok) {
                 console.log('Form data submitted successfully');
                 setFormData(initialFormData);
+                toast.success(`Entry Submitted `);
             } else {
                 console.error('Error submitting form data');
             }
