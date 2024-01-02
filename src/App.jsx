@@ -10,14 +10,22 @@ function App() {
   const handleToken = (tokenId) => {
     setToken(tokenId);
   }
+
+
   return (
     <NoteState>
-      <div className="App min-h-screen">
+      <div className=" min-h-screen">
         <Toaster />
-        {console.log(token)}
-        {!token ?
-          <Login onLogin={handleToken} />
-          : <HomeScreen onLogin={handleToken} />}
+        {/* {console.log(token)} */}
+        {!token ? (
+          <div className="bg-black">
+            <Login onLogin={handleToken} />
+          </div>
+        ) : (
+          <div className="bg-white">
+            <HomeScreen onLogin={handleToken} />
+          </div>
+        )}
       </div>
     </NoteState>
   );

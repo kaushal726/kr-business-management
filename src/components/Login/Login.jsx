@@ -3,41 +3,47 @@ import "./Login.css"
 import toast from 'react-hot-toast';
 import globalContext from '../Context/GlobalState';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSkullCrossbones } from '@fortawesome/free-solid-svg-icons';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import 'normalize.css';
+import image from '../../assets/Image/image.jpg'
 
 
 const WelcomeModal = ({ onClose }) => (
-    <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-blue-700 bg-opacity-75">
-        <div className="relative bg-white p-8 rounded-md shadow-lg w-full max-w-2xl mx-4 sm:mx-8 lg:mx-auto">
-            {/* Additional SVG Shape */}
+    <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-75 ">
+        <div className=" popup-div relative bg-green-200 p-8 rounded-md shadow-lg w-full max-w-2xl mx-4 sm:mx-8 lg:mx-auto">
+            <iframe className='absolute z-50 top-12 right-36  w-96 left-0' src="https://lottie.host/embed/5e372765-3513-4d85-8e36-8f3b3417e4a5/TKgTo1byJi.json"></iframe>
             <svg
                 className="absolute bottom-0 right-0 mb-8 text-blue-500 opacity-25"
                 fill="currentColor"
-                viewBox="0 0 100 100"
-            >
+                viewBox="0 0 100 100">
                 <circle cx="50" cy="50" r="50" />
             </svg>
 
             <button
-                className="absolute top-4 right-4 text-white hover:text-blue-900 focus:outline-none z-10"
-                onClick={onClose}
-            >
+                className="absolute top-2 text-2xl right-4 text-white hover:text-blue-900 focus:outline-none z-10"
+                onClick={onClose}>
                 <FontAwesomeIcon icon={faTimes} size="lg" />
             </button>
 
-            <h1 className="text-4xl font-extrabold mb-6 text-center text-gray-800 z-10 relative">
+            <h1 className="text-xl md:text-4xl font-extrabold mb-6 text-center text-gray-800 z-10 relative">
                 🔥 Welcome to Kaushal's Business Hub! 🔥
             </h1>
-            <p className="text-lg text-gray-700 relative z-10">
+            <p className="w-full text-center text-base md:text-lg font-semibold text-black relative z-10">
                 Hello, I'm Kaushal, the brains behind this cutting-edge business management platform.
                 Elevate your business operations with our innovative solutions designed for efficiency and success.
             </p>
-            <p className="text-md mt-6 text-gray-700 relative z-10">Take control, thrive in excellence.</p>
+            <iframe className='absolute z-50 top-12 right-0  w-96 left-42' src="https://lottie.host/embed/5e372765-3513-4d85-8e36-8f3b3417e4a5/TKgTo1byJi.json"></iframe>
+            <p className="text-sm md:text-md text-center mt-6 text-black relative z-10">Take control, thrive in excellence.</p>
+            <svg
+                className="absolute top-0 right-0 mt-8 text-blue-500 opacity-25"
+                fill="currentColor"
+                viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="50" />
+            </svg>
         </div>
     </div>
+
 );
 
 const Login = (props) => {
@@ -55,6 +61,9 @@ const Login = (props) => {
     const closeWelcomeModal = () => {
         setShowWelcomeModal(false);
     };
+
+
+
 
     useEffect(() => {
         let auth = JSON.parse(localStorage.getItem("loginauth"));
@@ -142,7 +151,9 @@ const Login = (props) => {
                 return response.json();
             })
             .then(data => {
-                console.log(data);
+                // console.log(data);
+                toast.success('User Created Successfully !! ');
+
             })
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);
@@ -166,95 +177,109 @@ const Login = (props) => {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-r from-red-500 to-yellow-500">
+        <div className="flex flex-col items-center justify-center h-screen   bg-add  ">
             {showWelcomeModal && <WelcomeModal onClose={closeWelcomeModal} />}
-            <form className="bg-white p-8 rounded-md shadow-md w-full max-w-md" onSubmit={register ? dataHandlerRegister : dataHandler}>
-                <h1 className="text-2xl font-semibold mb-6 text-center text-gray-800">
-                    🔥 {register ? 'Register' : 'Login'} 🔥
-                </h1>
+            <div className=' flex flex-col md:flex-row justify-between items-center md:w-4/6 md:h-5/6 h-9/12 w-7/12  shadow-2xl'>
+                <div className=' md:w-1/2 w-80 h-full'>
+                    <img className='  h-full w-full bg-cover' src={image} />
+                </div>
+                <form className=" bg-login-blue p-8  flex flex-col items-center justify-center md:w-1/2 w-80 h-full " onSubmit={register ? dataHandlerRegister : dataHandler}>
+                    <h1 className="text-3xl  font-sans font-bold mb-6 text-center text-white ">
+                        {register ? 'Register' : 'Login'}
+                    </h1>
 
-                {register ? (
-                    <div>
-                        <label className="block text-gray-800 mb-2">
-                            UserName :
-                            <input
-                                type="text"
-                                name="name"
-                                value={usernameRegister}
-                                onChange={(e) => handleChangeRegister(e, "Username")}
-                                className="mt-1 p-2 w-full border rounded-md"
-                                required
-                            />
-                        </label>
+                    {register ? (
+                        <div className='w-72'>
+                            <label className="block text-white mb-2">
+                                UserName :
+                                <input
+                                    type="text"
+                                    name="name"
+                                    value={usernameRegister}
+                                    onChange={(e) => handleChangeRegister(e, "Username")}
+                                    className="mt-1 p-2 font-normal text-black  w-full border rounded-md outline-blue-500 "
+                                    required
+                                    placeholder='Enter Your Username'
+                                />
+                            </label>
 
-                        <label className="block text-gray-800 mb-2">
-                            Email :
-                            <input
-                                type="email"
-                                name="name"
-                                value={emailRegister}
-                                onChange={(e) => handleChangeRegister(e, "Email")}
-                                className="mt-1 p-2 w-full border rounded-md"
-                                required
-                            />
-                        </label>
+                            <label className="block text-White text-white mb-2">
+                                Email :
+                                <input
+                                    type="email"
+                                    name="name"
+                                    value={emailRegister}
+                                    onChange={(e) => handleChangeRegister(e, "Email")}
+                                    className="mt-1 p-2 font-normal text-black  w-full border rounded-md outline-blue-500"
+                                    required
+                                    placeholder='Enter Your Email'
 
-                        <label className="block text-gray-800 mb-2">
-                            Enter Password :
-                            <input
-                                type="password"
-                                name="quantity"
-                                value={passwordRegister}
-                                onChange={(e) => handleChangeRegister(e, "Password")}
-                                className="mt-1 p-2 w-full border rounded-md"
-                                required
-                            />
-                        </label>
+                                />
+                            </label>
 
-                        <div className="flex items-center justify-center">
-                            <button className="bg-red-600 w-full text-white px-4 py-2 rounded-md hover:bg-red-700 focus:outline-none focus:ring focus:border-red-300">
-                                Submit
-                            </button>
+                            <label className="block text-white  mb-2">
+                                Enter Password :
+                                <input
+                                    type="password"
+                                    name="quantity"
+                                    value={passwordRegister}
+                                    onChange={(e) => handleChangeRegister(e, "Password")}
+                                    className="mt-1 p-2 font-normal text-black  w-full border rounded-md outline-blue-500"
+                                    required
+                                    placeholder='Enter Your Password'
+
+                                />
+                            </label>
+
+                            <div className="flex items-center justify-center">
+                                <button className="bg-blue-600 w-full text-white px-4 py-2 rounded-md hover:bg-blue-800 focus:outline-none focus:ring focus:border-red-300">
+                                    Submit
+                                </button>
+                            </div>
+
+                            <p className="text-white  text-center mt-4">Already have an account? <a href="/#" onClick={() => setRegister(false)} className="text-blue-500 font-bold">Login!</a></p>
                         </div>
+                    ) : (
+                        <div className='w-72 rounded-lg'>
+                            <label className="block text-white  mb-2">
+                                Enter Email :
+                                <input
+                                    type="email"
+                                    name="name"
+                                    value={email}
+                                    onChange={(e) => handleChange(e, "Email")}
+                                    className="mt-1 p-2 font-normal text-black w-full border rounded-md outline-blue-500"
+                                    required
+                                    placeholder='Enter Your Email'
 
-                        <p className="text-gray-800 text-center mt-4">Already have an account? <a href="/#" onClick={() => setRegister(false)} className="text-blue-500">Login!</a></p>
-                    </div>
-                ) : (
-                    <div>
-                        <label className="block text-gray-800 mb-2">
-                            Enter Email :
-                            <input
-                                type="email"
-                                name="name"
-                                value={email}
-                                onChange={(e) => handleChange(e, "Email")}
-                                className="mt-1 p-2 w-full border rounded-md"
-                                required
-                            />
-                        </label>
+                                />
+                            </label>
 
-                        <label className="block text-gray-800 mb-2">
-                            Enter Password :
-                            <input
-                                type="password"
-                                name="quantity"
-                                value={password}
-                                onChange={(e) => handleChange(e, "Password")}
-                                className="mt-1 p-2 w-full border rounded-md"
-                                required
-                            />
-                        </label>
+                            <label className="block text-white  mb-2">
+                                Enter Password :
+                                <input
+                                    type="password"
+                                    name="quantity"
+                                    value={password}
+                                    onChange={(e) => handleChange(e, "Password")}
+                                    className="mt-1 p-2 font-normal text-black w-full border rounded-md outline-blue-500"
+                                    required
+                                    placeholder='Enter Your Passwords'
 
-                        <div className="flex items-center justify-center">
-                            <button className="bg-red-600 w-full text-white px-4 py-2 rounded-md hover:bg-red-700 focus:outline-none focus:ring focus:border-red-300">
-                                Submit
-                            </button>
+                                />
+                            </label>
+
+                            <div className="flex items-center justify-center">
+                                <button className="bg-blue-600 w-full text-white px-4 py-2 rounded-md hover:bg-blue-800 focus:outline-none focus:ring focus:border-red-300">
+                                    Submit
+                                </button>
+                            </div>
+
+                            <p className="text-white  text-center mt-4">Don't have an account? <a href="/#" onClick={() => setRegister(true)} className="text-blue-500  font-bold">Register User!</a></p>
                         </div>
-
-                        <p className="text-gray-800 text-center mt-4">Don't have an account? <a href="/#" onClick={() => setRegister(true)} className="text-blue-500">Register User!</a></p>
-                    </div>
-                )}
-            </form>
+                    )}
+                </form>
+            </div>
         </div>
 
 

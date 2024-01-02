@@ -1,28 +1,35 @@
-import React from 'react'
 import { NavLink } from 'react-router-dom'
+import React, { useContext, useEffect, useState } from 'react';
+import globalContext from '../Context/GlobalState';
+import businessSVG from '../../assets/svg/business.svg'
 
-// eslint-disable-next-line
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-// eslint-disable-next-line
 
 function Navbar() {
+    const { login, updateLogin, token, setToken } = useContext(globalContext);
+
+    let handleLogout = () => {
+        updateLogin(false);
+    }
     return (
-        <nav className='bg-gradient-to-r from-red-500 to-yellow-500 p-3 flex items-center justify-center text-white md:py-4 py-3 z-40'>
-            <div className='relative border-b-2 border-white md:pb-6 md:w-96 flex items-center justify-center pb-3 w-full'>
-                <ul className='flex space-x-4'>
-                    <li className='text-lg font-semibold'>
-                        <NavLink to="/" className='hover:text-yellow-300 transition duration-300'>
-                            Home
-                        </NavLink>
-                    </li>
-                    <li className='text-lg font-semibold'>
-                        <NavLink to="/Details" className='hover:text-yellow-300 transition duration-300'>
-                            Details
-                        </NavLink>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+        <div className=" flex justify-center items-center  w-100 " >
+            <nav className=" bg-gray-300 shadow-lg my-3 rounded-full w-11/12 flex items-center justify-between px-6 py-4 ">
+                <div className="flex justify-between items-center">
+                    <div className="md:flex justify-center items-center h-full w-full">
+                        <NavLink className="text-gray-600 text-lg font-semibold italic hover:text-gray-900 flex justify-center items-center" to="/"><img className='flex justify-center items-center ' width={25} src={businessSVG} alt="Your SVG" /></NavLink>
+                        <div className='flex justify-start space-x-4 items-center ml-1 w-96 '>
+                            <NavLink className="text-gray-600 text-lg font-semibold italic hover:text-gray-900 flex justify-center items-center ml-2" to="/">Synex-BM</NavLink>
+                            <NavLink className="text-gray-600 text-lg font-semibold italic hover:text-gray-900 flex justify-center items-center ml-2" to="/Details">Entry</NavLink>
+
+                        </div>
+                    </div>
+                </div>
+                <div className="items-center space-x-4 md:flex">
+                    <button className="tracking-tight font-semibold">Create an account</button>
+                    <button className="text-red-600 tracking-tighter font-semibold" onClick={handleLogout} >Log Out </button>
+                </div>
+            </nav>
+        </div>
+
     )
 }
 

@@ -1,0 +1,48 @@
+<div class="bg-white">
+    <nav class="container mx-auto flex items-center justify-between px-6 py-4">
+        <div class="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="mr-2 text-red-500">
+                <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+                <line x1="4" x2="4" y1="22" y2="15"></line>
+            </svg>
+            <div class="hidden space-x-4 md:flex">
+                <a class="text-gray-600 hover:text-gray-900" href="#">
+                    <NavLink to="/">Home</NavLink>
+                </a>
+                <a class="text-gray-600 hover:text-gray-900" href="#">
+                    <NavLink to="/Details">Details</NavLink>
+                </a>
+                <a class="text-gray-600 hover:text-gray-900" href="#"> Resources </a>
+                <a class="text-gray-600 hover:text-gray-900" href="#"> Company </a>
+            </div>
+        </div>
+        <div class="hidden items-center space-x-4 md:flex">
+            <button
+                class="ring-offset-background focus-visible:ring-ring hover:text-accent-foreground inline-flex h-10 items-center justify-center rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-800 transition-colors hover:bg-gray-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">Create
+                an account</button>
+            <button
+                class="ring-offset-background focus-visible:ring-ring inline-flex h-10 items-center justify-center rounded-md bg-red-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">Log
+                in</button>
+        </div>
+    </nav>
+</div>
+/////////////////////////////////////////////////////
+<nav
+    className='bg-gradient-to-r from-red-500 to-yellow-500 p-3 flex items-center justify-center text-white md:py-4 py-3 z-40'>
+    <div className='relative border-b-2 border-white md:pb-6 md:w-96 flex items-center justify-center pb-3 w-full'>
+        <ul className='flex space-x-4'>
+            <li className='text-lg font-semibold'>
+                <NavLink to="/" className='hover:text-yellow-300 transition duration-300'>
+                    Home
+                </NavLink>
+            </li>
+            <li className='text-lg font-semibold'>
+                <NavLink to="/Details" className='hover:text-yellow-300 transition duration-300'>
+                    Details
+                </NavLink>
+            </li>
+        </ul>
+    </div>
+</nav>

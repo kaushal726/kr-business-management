@@ -1,0 +1,33 @@
+<div className="overflow-x-auto h-96 fancy-scrollbar ">
+    <div className="w-full overflow-y-auto">
+        <table className="table-auto w-full border-collapse border border-blue-500 mt-4">
+            <thead className='z-2'>
+                <tr className="bg-blue-500 text-white">
+                    <th className="border p-2">Timestamp</th>
+                    <th className="border p-2">Name</th>
+                    <th className="border p-2">Particular</th>
+                    <th className="border p-2">Rate</th>
+                    <th className="border p-2">Quantity</th>
+                    <th className="border p-2">Discount</th>
+                    <th className="border p-2">Total</th>
+                </tr>
+            </thead>
+            <tbody className='h-36 overflow-x-auto'>
+                {node.map((item, index) => (
+                    <tr
+                        key={item.created_at}
+                        className={index % 2 === 0 ? 'bg-gray-100' : 'bg-gray-200'}
+                    >
+                        <td className=" text-black border p-2">{formattedTimestamp(item.created_at)}</td>
+                        <td className=" text-black border p-2">{item.name}</td>
+                        <td className=" text-black border p-2">{item.particular}</td>
+                        <td className=" text-black border p-2">{item.rate}</td>
+                        <td className=" text-black border p-2">{item.quantity}</td>
+                        <td className=" text-black border p-2">{item.discount}</td>
+                        <td className=" text-black border p-2">{item.total}</td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+    </div>
+</div>
