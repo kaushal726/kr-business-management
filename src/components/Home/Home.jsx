@@ -21,6 +21,8 @@ const Home = () => {
     const { login, updateLogin, token, setToken } = useContext(globalContext);
     const [nodes, setUserDetails] = useState([]);
     const [showTable, setShowTable] = useState(false);
+    const [selectedPeriod, setSelectedPeriod] = useState("Week");
+
 
     const theme = useTheme([
         getTheme(),
@@ -65,9 +67,12 @@ const Home = () => {
                     console.log(data);
                     if (data.hasOwnProperty('Error')) {
                         updateLogin(false);
+
                     }
-                    setUserDetails(data);
-                    setShowTable(true);
+                    else {
+                        setUserDetails(data);
+                        setShowTable(true);
+                    }
 
                 }
             } catch (error) {
@@ -106,6 +111,7 @@ const Home = () => {
     };
 
     const createCSVData = () => {
+        console.log(nodes);
         const csvData = [
             ['Timestamp', 'Name', 'Particular', 'Rate', 'Quantity', 'Discount', 'Total'],
             ...nodes.map((item) => [
@@ -118,10 +124,27 @@ const Home = () => {
                 item.total,
             ]),
         ];
+        console.log(csvData);
         return csvData;
     };
     const showToast = () => {
         toast.success(` Excel Downloaded `);
+    }
+
+    const downloadCSV = () => {
+        if (selectedPeriod == "Day") {
+
+        }
+        else if (selectedPeriod == "Week") {
+
+        }
+        else if (selectedPeriod == "Month") {
+
+        }
+        else if (selectedPeriod == "Year") {
+
+        }
+
     }
 
     let data = { nodes };
@@ -208,8 +231,8 @@ const Home = () => {
                             Select Period:&nbsp;
                             <select
                                 id="period"
-                                // value={selectedPeriod}
-                                // onChange={handlePeriodChange}
+                                value={selectedPeriod}
+                                onChange={handlePeriodChange}
                                 className="w-32 px-2 py-1 border rounded-md focus:outline-none focus:border-blue-500"
                             >
                                 <option value="week">Week</option>
@@ -219,7 +242,7 @@ const Home = () => {
                         </label>
                         <CSVLink
                             data={createCSVData()}
-                            // filename={`data_${selectedPeriod}.csv`}
+                            filename={`data_${selectedPeriod}.csv`}
                             className="ml-4 bg-blue-500 text-white px-4 py-2 rounded-md"
                             onClick={showToast}
                         >

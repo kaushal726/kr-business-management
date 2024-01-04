@@ -157,6 +157,7 @@ const Login = (props) => {
             })
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);
+                toast.error('User Creation Failed !! ');
             });
         setEmailRegister("");
         setPasswordRegister("");
